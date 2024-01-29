@@ -1,7 +1,10 @@
 package com.example.interestserver.service;
 
-import com.example.interestserver.domain.*;
+import com.example.interestserver.domain.Field;
+import com.example.interestserver.domain.Interest;
 import com.example.interestserver.dto.InterestDTO;
+import com.example.interestserver.dto.InterestRequestDTO;
+import com.example.interestserver.dto.InterestResponseDTO;
 import com.example.interestserver.repository.InterestRepository;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +41,7 @@ public class InterestService {
         return interests.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    public InterestDTO createInterest(InterestDTO interestDTO) {
+    public InterestResponseDTO createInterest(InterestRequestDTO interestDTO) {
         Interest interest = convertToEntity(interestDTO);
         Interest savedInterest = interestRepository.save(interest);
         return convertToDTO(savedInterest);
@@ -59,14 +62,15 @@ public class InterestService {
         return interestDTO;
     }
 
-    private Interest convertToEntity(InterestDTO interestDTO) {
-        Interest interest = new Interest();
-        interest.setMemberId(interestDTO.getMemberId());
-        interest.setLatitude(interestDTO.getLatitude());
-        interest.setLongitude(interestDTO.getLongitude());
-        interest.setScore(interestDTO.getScore());
-        interest.setNickName(interestDTO.getNickName());
-        interest.setField(Field.valueOf(interestDTO.getField()));
-        return interest;
+    private InterestResponseDTO convertToDTO(Interest interest) {
+        InterestResponseDTO interestResponseDTO = new InterestResponseDTO();
+        interestResponseDTO.setMemberId(interest.getMemberId());
+        interestResponseDTO.setLatitude(interest.getLatitude());
+        interestResponseDTO.setLongitude(interest.getLongitude());
+        interestResponseDTO.setScore(interest.getScore());
+        interestResponseDTO.setNickName(interest.getNickName());
+        interestResponseDTO.setField(interest.getField().name());
+        return interestResponseDTO;
     }
-}
+
+    private Interest convertToEntity(InterestRequestDTO interestDTO)

@@ -8,7 +8,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class Interest {
-    @Id // pk설정
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -28,5 +29,3 @@ public class Interest {
         this.field = Field.valueOf(field);
     }
 }
-
-
